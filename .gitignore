@@ -1,0 +1,16 @@
+node_modules
+dist
+*.log
+.DS_Store
+
+# dotenv environment variable files
+.env
+.env.*
+!.env.example
+
+# Fixture build and generated route artifacts.
+.svelte-kit
+build
+.vite
+
+*.tgz

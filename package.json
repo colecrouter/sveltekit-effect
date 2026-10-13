@@ -1,0 +1,87 @@
+{
+	"name": "sveltekit-effect",
+	"version": "0.2.0",
+	"description": "Explicit Effect provision and owned execution for SvelteKit server requests.",
+	"homepage": "https://github.com/colecrouter/sveltekit-effect#readme",
+	"bugs": {
+		"url": "https://github.com/colecrouter/sveltekit-effect/issues"
+	},
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/colecrouter/sveltekit-effect.git"
+	},
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"exports": {
+		"./server": {
+			"types": "./dist/server.d.mts",
+			"svelte": "./dist/server.mjs",
+			"import": "./dist/server.mjs"
+		},
+		"./dev": {
+			"types": "./dist/dev.d.mts",
+			"import": "./dist/dev.mjs"
+		},
+		"./node": {
+			"types": "./dist/node.d.mts",
+			"import": "./dist/node.mjs"
+		},
+		"./config": {
+			"types": "./dist/config.d.mts",
+			"import": "./dist/config.mjs"
+		},
+		"./otel": {
+			"types": "./dist/otel.d.mts",
+			"svelte": "./dist/otel.mjs",
+			"import": "./dist/otel.mjs"
+		}
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"scripts": {
+		"build": "vp pack",
+		"dev": "vp pack --watch",
+		"test": "vp test run",
+		"check": "vp check",
+		"prepublishOnly": "vp run build",
+		"test:fixtures": "vp exec node scripts/test-fixtures.mjs"
+	},
+	"dependencies": {
+		"@effect/opentelemetry": "4.0.0",
+		"@opentelemetry/api": "1.9.0",
+		"@opentelemetry/resources": "^2.11.0",
+		"@opentelemetry/semantic-conventions": "^1.43.0"
+	},
+	"devDependencies": {
+		"@opentelemetry/context-async-hooks": "2.11.0",
+		"@opentelemetry/sdk-trace-base": "2.11.0",
+		"@opentelemetry/sdk-trace-node": "2.11.0",
+		"@sveltejs/kit": "2.66.0",
+		"@types/node": "^26.1.1",
+		"effect": "4.0.0",
+		"svelte": "^5.56.3",
+		"typescript": "6.0.3",
+		"vite-plus": "1.0.0"
+	},
+	"peerDependencies": {
+		"@sveltejs/kit": ">=2.66.0 <4",
+		"effect": "^4.0.0"
+	},
+	"overrides": {
+		"vite": "npm:@voidzero-dev/vite-plus-core@1.0.0"
+	},
+	"devEngines": {
+		"packageManager": {
+			"name": "npm",
+			"version": "11.19.0",
+			"onFail": "download"
+		}
+	},
+	"engines": {
+		"node": ">=22"
+	}
+}

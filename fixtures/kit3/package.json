@@ -1,0 +1,33 @@
+{
+	"name": "sveltekit-effect-kit3-fixture",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"dev": "vp dev",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"build": "vp build"
+	},
+	"dependencies": {
+		"effect": "4.0.0",
+		"sveltekit-effect": "file:../.."
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-node": "^6.0.0",
+		"@sveltejs/kit": "3.0.1",
+		"@sveltejs/vite-plugin-svelte": "^7.1.2",
+		"svelte": "^5.57.1",
+		"svelte-check": "^4.7.6",
+		"typescript": "6.0.3",
+		"vite-plus": "1.0.0"
+	},
+	"overrides": {
+		"vite": "npm:@voidzero-dev/vite-plus-core@1.0.0"
+	},
+	"devEngines": {
+		"packageManager": {
+			"name": "pnpm",
+			"version": "12.11.2",
+			"onFail": "download"
+		}
+	}
+}
