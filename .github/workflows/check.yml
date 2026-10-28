@@ -25,4 +25,21 @@ jobs:
         with:
           node-version: "24"
           cache: true
-      - run: vp check
+      # Fixture apps own their generated TypeScript configs and are checked below.
+      - name: Check formatting
+        run: vp fmt . --check
+      - name: Check library and test tooling
+        run: vp lint src tests scripts vite.config.ts
+      - name: Run library tests
+        run: vp run test
+      # file: dependencies in the fixtures consume the built library.
+      - name: Build library
+        run: vp run build
+      - name: Install Kit 2 fixture dependencies
+        working-directory: fixtures/kit2
+        run: vp install --frozen-lockfile
+      - name: Install Kit 3 fixture dependencies
+        working-directory: fixtures/kit3
+        run: vp install --frozen-lockfile
+      - name: Check fixture types, production SSR, and remote HTTP
+        run: vp run test:fixtures
