@@ -303,3 +303,14 @@ Server exports include Svelte's export condition so the host bundles the
 ## License
 
 [MIT](./LICENSE).
+
+## Releasing
+
+Update the package version and lockfiles, run the checks and compatibility matrix,
+then commit and push the release changes. Create an annotated `v<version>` tag on
+that exact commit and push the tag. The GitHub Release workflow verifies the
+version, checks and builds the library, and creates a release with generated notes
+and a package tarball. npm publication remains a separate manual step; publish the
+release tarball with `npm publish <tarball> --access public` and verify its registry
+metadata. Keep the tag, GitHub Release, and npm package tied to the same source
+commit.

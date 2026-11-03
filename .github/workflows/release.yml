@@ -1,0 +1,41 @@
+name: GitHub Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: voidzero-dev/setup-vp@v1.21.2
+        with:
+          node-version: "24"
+          cache: true
+      - name: Verify tag matches package version
+        run: node --input-type=module -e 'import fs from "node:fs"; const { version } = JSON.parse(fs.readFileSync("package.json", "utf8")); if (process.env.GITHUB_REF_NAME !== `v${version}`) throw new Error("Tag must match package version");'
+      - name: Check library types
+        run: vp exec tsc --noEmit
+      - name: Run library tests
+        run: vp run test
+      - name: Build library
+        run: vp run build
+      - name: Pack release artifact
+        run: npm pack --pack-destination "$RUNNER_TEMP"
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "$RUNNER_TEMP/sveltekit-effect-${GITHUB_REF_NAME#v}.tgz" --verify-tag --generate-notes --title "$GITHUB_REF_NAME"
