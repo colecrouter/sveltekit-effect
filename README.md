@@ -37,8 +37,27 @@ chooses its service graph, error-to-response handling, telemetry exporters and
 configuration sources. Effects remain ordinary Effects, and Layers remain
 ordinary Layers; no AST transform or custom Vite plugin is required.
 
-The current implementation is validated with Effect `4.0.0`, SvelteKit
-`2.66.0` and `3.0.1`. Execution is scoped to awaited server callbacks; streaming,
+The supported Effect range is `>=4.0.0 <4.2.0`. Library compatibility is tested
+with Effect `4.0.0`, `4.0.7` and `4.1.2`, while SvelteKit integration fixtures use
+Effect `4.0.0` with SvelteKit `2.66.0` and `3.0.1`.
+
+The OpenTelemetry integration is unstable under
+[Effect's stability policy](https://github.com/Effect-TS/effect/blob/effect%404.1.2/MIGRATION.md#unstable-module-system),
+which permits breaking changes in minor releases. Both `effect` and
+`@effect/opentelemetry` are peer dependencies with the range `>=4.0.0 <4.2.0`.
+Install matching versions of these two packages; the peer ranges alone do not
+ensure that their versions match. For example:
+
+```sh
+npm install sveltekit-effect effect@4.1.2 @effect/opentelemetry@4.1.2 @opentelemetry/api@1.9.0
+```
+
+`@opentelemetry/api` is also a peer dependency (`>=1.9.0 <2`) so the application
+owns its telemetry API. Development versions remain pinned for reproducible
+checks, and CI tests matching Effect/OpenTelemetry pairs at `4.0.0`, `4.0.7` and
+`4.1.2`. Widen the supported range only after checking each new minor release.
+
+Execution is scoped to awaited server callbacks; streaming,
 live queries and detached background work are outside the current lifecycle.
 The server runtime uses `Promise.withResolvers`; Node deployments require Node 22
 or newer, and other runtimes must provide that API.

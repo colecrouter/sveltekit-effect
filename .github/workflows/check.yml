@@ -43,3 +43,27 @@ jobs:
         run: vp install --frozen-lockfile
       - name: Check fixture types, production SSR, and remote HTTP
         run: vp run test:fixtures
+
+  effect-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        effect: ["4.0.0", "4.0.7", "4.1.2"]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: voidzero-dev/setup-vp@v1.21.2
+        with:
+          node-version: "24"
+          cache: true
+      - name: Select matching Effect packages without changing the lockfile
+        run: npm install --ignore-scripts --no-save --package-lock=false effect@${{ matrix.effect }} @effect/opentelemetry@${{ matrix.effect }}
+      - name: Check library types
+        run: vp exec tsc --noEmit
+      - name: Run library tests
+        run: vp run test
+      - name: Build library
+        run: vp run build
